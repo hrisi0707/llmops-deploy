@@ -92,6 +92,7 @@ if prompt := st.chat_input(placeholder="Ask me a question!"):
     st.session_state.messages.append({"type": "user", "content": prompt})
     with st.spinner(text="Thinking ..."):
         with st.chat_message("assistant", avatar="🦜"):
+            context_placeholder = st.empty()
             message_placeholder = st.empty()
             full_response = ""
             # Define the basic input structure for the chains
@@ -103,6 +104,21 @@ if prompt := st.chat_input(placeholder="Ask me a question!"):
                     "content": full_response.get("answer")
                 })
                 st.session_state.run_id = cb.traced_runs[0].id
+            context = [document.page_content for document in full_response.get("context_str")]
+            meta_data = [document.metadata for document in full_response.get("context_str")]
+            # context_placeholder.markdown("```" + "\n".join(context) + "```")
+            meta_data_string = ""
+            for i in meta_data:
+                # print(i)
+                meta_data_string+="File Name:" + i["filename"] + " Page:" + str(i["page"]) + " Quarter:" + i["quarter"] + " Year:" + i["year"] + "\n"
+            context_count = 1
+            context_string = ""
+            for i in context:
+                context_string += f"Context-{context_count}: \n{i}\n\n"
+                context_count+=1
+            
+            context_string = "### References:\n```\n" + context_string + "\n\n" + f"File References:\n{meta_data_string} ```"
+            context_placeholder.markdown(context_string)
             message_placeholder.markdown(full_response.get("answer"))
 
 if st.session_state.get("run_id"):
