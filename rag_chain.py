@@ -16,7 +16,8 @@ def get_expression_chain(
         ]
     )
 
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+#    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    llm = AzureChatOpenAI(model="hrisikesh-gpt-35-turbo", temperature=0,api_version="2024-02-01")
     
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
