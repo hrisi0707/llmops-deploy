@@ -46,7 +46,7 @@ st.set_page_config(
     page_icon="🦜️️🛠️",
 )
 
-st.subheader("🦜🛠️ Fractal Finance Bot")
+st.subheader("🦜🛠️ Personal Finance Bot")
 
 # Metadata from user
 with st.sidebar:
